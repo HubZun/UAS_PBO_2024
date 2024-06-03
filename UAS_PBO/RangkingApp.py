@@ -2,6 +2,8 @@ import tkinter as tk
 from tkinter import ttk
 
 from . import MenuApp as app_menu
+from . import database as db
+# from . import 
 
 class RankingApp:
     def __init__(self, root, ranking_data):
@@ -35,12 +37,21 @@ class RankingApp:
         self.exit_button.pack(pady=10)
 
     def show_ranking(self):
-        # Urutkan data peringkat berdasarkan poin (diurutkan dari besar ke kecil)
-        sorted_ranking = sorted(self.ranking_data.items(), key=lambda x: x[1], reverse=True)
+        query = f"select * from leaderboard order by skor desc "
+        db.cursor.execute(query)
+        
+        result = db.cursor.fetchall()
+        
+        for i in result:
+            self.rank_tree.insert("", "end", values=(i[1], i[2]))
+        
+        
+        # # Urutkan data peringkat berdasarkan poin (diurutkan dari besar ke kecil)
+        # sorted_ranking = sorted(self.ranking_data.items(), key=lambda x: x[1], reverse=True)
 
-        # Menambahkan data peringkat ke dalam tabel
-        for i, (user, points) in enumerate(sorted_ranking):
-            self.rank_tree.insert("", "end", values=(user, points))
+        # # Menambahkan data peringkat ke dalam tabel
+        # for i, (user, points) in enumerate(sorted_ranking):
+           
 
     def exit_app(self):
         self.root.destroy()

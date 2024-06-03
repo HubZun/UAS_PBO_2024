@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import messagebox
 
 from . import LoginApp as app_login
+from . import database as db
 class RegisterApp:
     def __init__(self, root, username, password, nama_lengkap, prodi):
         self.root = root
@@ -14,6 +15,7 @@ class RegisterApp:
 
         def on_select(event):
             # Mendapatkan indeks item yang dipilih
+            global value
             index = listbox.curselection()[0]
             # Mendapatkan nilai item yang dipilih
             value = listbox.get(index)
@@ -90,12 +92,36 @@ class RegisterApp:
     def register(self):
         username = self.username_entry.get().strip()
         password = self.password_entry.get().strip()
-        if username == "a" and password == "a":
-            messagebox.showinfo("login","Berhasil Login")
-            self.root.destroy()
-            app_login.start()
-        else:
-            messagebox.showinfo("login","Gagal Login")
+        
+        query = f"select * from tbuser "
+        db.cursor.execute(query)
+        
+        result = db.cursor.fetchall()
+        
+        for i in result:
+            if i[1] == username: 
+                messagebox.showinfo("Registrasi","username telah digunakan")
+                break
+                
+            else:
+                data = [(username,password,value)]
+                query = "insert into tbuser (username, password) values (%s, %s, %s)"
+                
+                db.cursor.executemany(query, data)
+                
+                # untuk mengubah data di database
+                db.con.commit()
+                
+                messagebox.showinfo("Registrasi","Berhasil Registrasi")
+                self.root.destroy()
+                app_login.start()
+                
+                print("Berhasil Sign Up")
+        
+        # if username == "a" and password == "a":
+            
+        # else:
+        #     messagebox.showinfo("login","Gagal Login")
 
     def exit_program(self):
         self.root.destroy()
