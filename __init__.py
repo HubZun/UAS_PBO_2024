@@ -89,6 +89,7 @@ def add_auto_question(quiz, question_type, prompt, choices, answer):
     else:
         raise ValueError("Invalid question type")
     quiz.add_question(question)
+    
 ####################### main #######################
 quiz = Quiz()
 

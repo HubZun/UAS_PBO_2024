@@ -3,6 +3,7 @@ from tkinter import messagebox
 
 from . import LoginApp as app_login
 from . import RangkingApp as app_ranking
+from . import QuizApp as app_quiz
 
 class MenuApp:
     def __init__(self, root, username, password):
@@ -33,8 +34,9 @@ class MenuApp:
         self.exit_button.grid(row=3, column=0, columnspan=2, pady=10)
 
     def quizstart(self):
-        messagebox.showinfo("Quiz","Quiz di Mulai")
-    
+        self.root.destroy()
+        app_quiz.start()
+
     def seeRank(self):
         self.root.destroy()
         app_ranking.start()
