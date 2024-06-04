@@ -5,4 +5,4 @@ def open_loginapp():
     app_register.import_participant()
     app_login.start()
 
-open_loginapp()
+open_loginapp() 

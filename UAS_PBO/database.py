@@ -52,21 +52,21 @@ class user:
         
         
         
-    def login(self):
-        self.__username = input("masukkan username > ")
-        self.__password = input("masukkan password > ")
+    # def login(self):
+    #     self.__username = input("masukkan username > ")
+    #     self.__password = input("masukkan password > ")
         
-        query = f"select * from tbuser "
-        cursor.execute(query)
+    #     query = f"select * from tbuser "
+    #     cursor.execute(query)
         
-        result = cursor.fetchall()
+    #     result = cursor.fetchall()
         
-        for i in result:
-            if i[1] == self.__username and i[2] == self.__password:
-                self.__id = i[0] 
-                print("username ditemukan")
-                break
+    #     for i in result:
+    #         if i[1] == self.__username and i[2] == self.__password:
+    #             self.__id = i[0] 
+    #             print("username ditemukan")
+    #             break
                 
-            else:
-                continue
+    #         else:
+    #             continue
 

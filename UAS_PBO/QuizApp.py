@@ -8,6 +8,8 @@ from . import LoginApp as app_login
 from . import database as db
 from . import MenuApp  as app_menu
 
+questions = []
+
 class Question:
     def __init__(self, prompt, choices, answer, time_limit=20):
         self.prompt = prompt
@@ -64,46 +66,46 @@ class QuizApp:
         self.root.bind("<Escape>", self.exit_fullscreen)  # Mengaitkan tombol Escape untuk keluar dari layar penuh
 
     def add_questions_automatically(self):
-        questions = [
-            ("Saintek", "Apa ibu kota Perancis?", ["Paris", "London", "Berlin", "Roma", "Madrid"], "Paris"),
-            ("Soshum", "Siapa penulis 'Romeo dan Juliet'?", ["Shakespeare", "Hemingway", "Tolstoy", "Austen", "Dickens"], "Shakespeare"),
-            ("TPS", "Apa planet terbesar di tata surya kita?", ["Jupiter", "Saturnus", "Mars", "Venus", "Neptunus"], "Jupiter"),
-            ("Saintek", "Apa simbol kimia untuk air?", ["H2O", "CO2", "O2", "N2", "He"], "H2O"),
-            ("Soshum", "Siapa penulis '1984'?", ["George Orwell", "Mark Twain", "Jane Austen", "J.K. Rowling", "Ernest Hemingway"], "George Orwell"),
-            ("TPS", "Berapa 9 + 10?", ["19", "21", "18", "20", "17"], "19"),
-            ("Saintek", "Berapa kecepatan cahaya?", ["299.792.458 m/s", "150.000.000 m/s", "340 m/s", "1.080.000.000 m/s", "1.000.000 m/s"], "299.792.458 m/s"),
-            ("Soshum", "Siapa pelukis Mona Lisa?", ["Leonardo da Vinci", "Pablo Picasso", "Vincent van Gogh", "Claude Monet", "Salvador Dalí"], "Leonardo da Vinci"),
-            ("TPS", "Berapa akar kuadrat dari 64?", ["8", "6", "7", "9", "10"], "8"),
-            ("Saintek", "Berapa titik didih air?", ["100°C", "90°C", "80°C", "110°C", "120°C"], "100°C"),
-            ("Saintek", "Apa unsur kimia dengan simbol 'O'?", ["Oksigen", "Hidrogen", "Karbon", "Nitrogen", "Helium"], "Oksigen"),
-            ("Soshum", "Siapa presiden pertama Indonesia?", ["Soekarno", "Suharto", "Habibie", "Megawati", "SBY"], "Soekarno"),
-            ("TPS", "Berapa hasil dari 7 * 8?", ["56", "54", "58", "60", "52"], "56"),
-            ("Saintek", "Apa rumus kimia dari garam dapur?", ["NaCl", "KCl", "MgCl2", "CaCl2", "LiCl"], "NaCl"),
-            ("Soshum", "Siapa pendiri Microsoft?", ["Bill Gates", "Steve Jobs", "Mark Zuckerberg", "Elon Musk", "Larry Page"], "Bill Gates"),
-            ("TPS", "Berapa hasil dari 12 - 7?", ["5", "4", "6", "3", "2"], "5"),
-            ("Saintek", "Apa unsur kimia dengan simbol 'Fe'?", ["Besi", "Emas", "Perak", "Tembaga", "Aluminium"], "Besi"),
-            ("Soshum", "Siapa penulis 'Harry Potter'?", ["J.K. Rowling", "J.R.R. Tolkien", "George R.R. Martin", "Suzanne Collins", "Stephenie Meyer"], "J.K. Rowling"),
-            ("TPS", "Berapa hasil dari 100 / 4?", ["25", "20", "30", "40", "15"], "25"),
-            ("Saintek", "Apa unsur kimia dengan simbol 'Ag'?", ["Perak", "Emas", "Platinum", "Tembaga", "Aluminium"], "Perak")
-        ]
+        # questions = [
+        #     ("Saintek", "Apa ibu kota Perancis?", ["Paris", "London", "Berlin", "Roma", "Madrid"], "Paris"),
+        #     ("Soshum", "Siapa penulis 'Romeo dan Juliet'?", ["Shakespeare", "Hemingway", "Tolstoy", "Austen", "Dickens"], "Shakespeare"),
+        #     ("TPS", "Apa planet terbesar di tata surya kita?", ["Jupiter", "Saturnus", "Mars", "Venus", "Neptunus"], "Jupiter"),
+        #     ("Saintek", "Apa simbol kimia untuk air?", ["H2O", "CO2", "O2", "N2", "He"], "H2O"),
+        #     ("Soshum", "Siapa penulis '1984'?", ["George Orwell", "Mark Twain", "Jane Austen", "J.K. Rowling", "Ernest Hemingway"], "George Orwell"),
+        #     ("TPS", "Berapa 9 + 10?", ["19", "21", "18", "20", "17"], "19"),
+        #     ("Saintek", "Berapa kecepatan cahaya?", ["299.792.458 m/s", "150.000.000 m/s", "340 m/s", "1.080.000.000 m/s", "1.000.000 m/s"], "299.792.458 m/s"),
+        #     ("Soshum", "Siapa pelukis Mona Lisa?", ["Leonardo da Vinci", "Pablo Picasso", "Vincent van Gogh", "Claude Monet", "Salvador Dalí"], "Leonardo da Vinci"),
+        #     ("TPS", "Berapa akar kuadrat dari 64?", ["8", "6", "7", "9", "10"], "8"),
+        #     ("Saintek", "Berapa titik didih air?", ["100°C", "90°C", "80°C", "110°C", "120°C"], "100°C"),
+        #     ("Saintek", "Apa unsur kimia dengan simbol 'O'?", ["Oksigen", "Hidrogen", "Karbon", "Nitrogen", "Helium"], "Oksigen"),
+        #     ("Soshum", "Siapa presiden pertama Indonesia?", ["Soekarno", "Suharto", "Habibie", "Megawati", "SBY"], "Soekarno"),
+        #     ("TPS", "Berapa hasil dari 7 * 8?", ["56", "54", "58", "60", "52"], "56"),
+        #     ("Saintek", "Apa rumus kimia dari garam dapur?", ["NaCl", "KCl", "MgCl2", "CaCl2", "LiCl"], "NaCl"),
+        #     ("Soshum", "Siapa pendiri Microsoft?", ["Bill Gates", "Steve Jobs", "Mark Zuckerberg", "Elon Musk", "Larry Page"], "Bill Gates"),
+        #     ("TPS", "Berapa hasil dari 12 - 7?", ["5", "4", "6", "3", "2"], "5"),
+        #     ("Saintek", "Apa unsur kimia dengan simbol 'Fe'?", ["Besi", "Emas", "Perak", "Tembaga", "Aluminium"], "Besi"),
+        #     ("Soshum", "Siapa penulis 'Harry Potter'?", ["J.K. Rowling", "J.R.R. Tolkien", "George R.R. Martin", "Suzanne Collins", "Stephenie Meyer"], "J.K. Rowling"),
+        #     ("TPS", "Berapa hasil dari 100 / 4?", ["25", "20", "30", "40", "15"], "25"),
+        #     ("Saintek", "Apa unsur kimia dengan simbol 'Ag'?", ["Perak", "Emas", "Platinum", "Tembaga", "Aluminium"], "Perak")
+        # ]
 
         for question_type, prompt, choices, answer in questions:
             global tipejurusan
             if app_login.prodilogin == "Informatika" or app_login.prodilogin == "Sistem Informasi" or app_login.prodilogin == "Kedokteran" or app_login.prodilogin == "Statistika" or app_login.prodilogin == "Pendidikan Matematika":
-                tipejurusan = "Saintek"
+                tipejurusan = "saintek"
             elif app_login.prodilogin == "Hubungan Internasional" or app_login.prodilogin == "Ilmu Pemerintahan" or app_login.prodilogin == "Ilmu Hukum" or app_login.prodilogin == "Ilmu Komunikasi" or app_login.prodilogin == "Psikologi":
-                tipejurusan = "Soshum"
+                tipejurusan = "soshum"
             else:
                 tipejurusan = ""
                 
-            if tipejurusan == "Saintek" and question_type not in ["Saintek", "TPS"]:
+            if tipejurusan == "saintek" and question_type not in ["saintek", "TPS"]:
                 continue
-            elif tipejurusan == "Soshum" and question_type not in ["Soshum","TPS"]:
+            elif tipejurusan == "soshum" and question_type not in ["soshum","TPS"]:
                 continue
 
-            if question_type == "Saintek":
+            if question_type == "saintek":
                 question = SaintekQuestion(prompt, choices, answer)
-            elif question_type == "Soshum":
+            elif question_type == "soshum":
                 question = SoshumQuestion(prompt, choices, answer)
             elif question_type == "TPS":
                 question = TPSQuestion(prompt, choices, answer)
@@ -164,7 +166,7 @@ class QuizApp:
     def update_score(self, total_score):
         participant = app_register.list_participant[app_login.usernamelogin]
         participant.update_score(total_score)
-        query = f"update tbuser set skor = {app_login.skorlogin + self.score * 10} where username = '{app_login.usernamelogin}'"
+        query = f"update tbuser set skor =  {app_login.skorlogin + self.score * 10} where username = '{app_login.usernamelogin}'"
         db.cursor.execute(query)
         db.con.commit()
 
@@ -187,6 +189,17 @@ class QuizApp:
         self.root.attributes("-fullscreen", False)  # Keluar dari mode layar penuh
     
 def start():
+    
+    query = f"select * from soal"
+    db.cursor.execute(query)
+    
+    result = db.cursor.fetchall()
+    
+    for i in result:
+        soal = (i[1], i[2], [i[3], i[4], i[5], i[6], i[7]], i[8])
+        questions.append(soal)
+        
+    
     root = tk.Tk()
     root.title("Quiz")
     app = QuizApp(root)

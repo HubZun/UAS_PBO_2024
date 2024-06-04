@@ -73,8 +73,7 @@ class LoginApp:
                 app_menu.start()
                 break
                 
-            else:
-                messagebox.showinfo("login","Gagal Login")    
+               
     
     def register(self):
         self.root.destroy()

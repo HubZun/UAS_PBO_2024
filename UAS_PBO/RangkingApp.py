@@ -37,13 +37,13 @@ class RankingApp:
         self.exit_button.pack(pady=10)
 
     def show_ranking(self):
-        query = f"select * from leaderboard order by skor desc "
+        query = f"select * from tbuser order by skor desc "
         db.cursor.execute(query)
         
         result = db.cursor.fetchall()
         
         for i in result:
-            self.rank_tree.insert("", "end", values=(i[1], i[2]))
+            self.rank_tree.insert("", "end", values=(i[1], i[4]))
         
         
         # # Urutkan data peringkat berdasarkan poin (diurutkan dari besar ke kecil)

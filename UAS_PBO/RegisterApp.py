@@ -27,6 +27,7 @@ def import_participant():
         participant = Participant(i[1], i[2], "", i[3], i[4])
         list_participant[i[1]] = participant
         print(f"Participant: {participant}")
+        
 class RegisterApp:
     def __init__(self, root, username, password, nama_lengkap, prodi):
         self.root = root
@@ -116,6 +117,7 @@ class RegisterApp:
     def register(self):
         username = self.username_entry.get().strip()
         password = self.password_entry.get().strip()
+        namaLengkap = self.name_entry.get().strip()
         
         query = f"select * from tbuser "
         db.cursor.execute(query)
@@ -128,8 +130,8 @@ class RegisterApp:
                 break
                 
             else:
-                data = [(username,password,value)]
-                query = "insert into tbuser (username, password) values (%s, %s, %s)"
+                data = [(username,password,value, namaLengkap ) ]
+                query = "insert into tbuser (username, password, prodi, nama_lengkap) values (%s, %s, %s, %s)"
                 
                 db.cursor.executemany(query, data)
                 
