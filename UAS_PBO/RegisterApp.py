@@ -3,6 +3,30 @@ from tkinter import messagebox
 
 from . import LoginApp as app_login
 from . import database as db
+
+list_participant = {}
+
+class Participant:
+    def __init__(self, username, password, name, prodi, score):
+        self.name = name
+        self.score = score
+        self.username = username
+        self.password = password
+        self.prodi = prodi
+    
+    def update_score(self, total_score):
+        self.score += total_score
+
+def import_participant():
+    query = "select * from tbuser"
+    db.cursor.execute(query)
+
+    result = db.cursor.fetchall()
+
+    for i in result:
+        participant = Participant(i[1], i[2], "", i[3], i[4])
+        list_participant[i[1]] = participant
+        print(f"Participant: {participant}")
 class RegisterApp:
     def __init__(self, root, username, password, nama_lengkap, prodi):
         self.root = root
@@ -75,7 +99,7 @@ class RegisterApp:
         listbox.grid(row=1, column=0)
 
         # Menambahkan item ke Listbox
-        for item in ["Informatika", "Sistem Informasi", "Kedokteran", "Hubungan Internasional", "Ilmu Pemerintahan"]:
+        for item in ["Informatika", "Sistem Informasi", "Kedokteran","Statistika", "Pendidikan Matematika","Hubungan Internasional", "Ilmu Pemerintahan","Ilmu Hukum", "Ilmu Komunikasi", "Psikologi"]:
             listbox.insert(tk.END, item)
 
         # Mengaitkan event handler dengan Listbox
@@ -113,6 +137,7 @@ class RegisterApp:
                 db.con.commit()
                 
                 messagebox.showinfo("Registrasi","Berhasil Registrasi")
+                participant = Participant(username,password,"",value,0)
                 self.root.destroy()
                 app_login.start()
                 

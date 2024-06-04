@@ -18,7 +18,7 @@ class MenuApp:
         frame.place(relx=0.5, rely=0.4 , anchor=tk.CENTER)
 
         # Label "selamat datang"
-        self.welcome_label = tk.Label(frame, text="Halo, selamat datang user", font=("Futura", 14))
+        self.welcome_label = tk.Label(frame, text= f"Halo, selamat datang {app_login.usernamelogin}", font=("Futura", 14))
         self.welcome_label.grid(row=0, column=0, columnspan=2, pady=(50, 20))  # Padding atas diatur ke 50px
 
         # Button "Quiz"

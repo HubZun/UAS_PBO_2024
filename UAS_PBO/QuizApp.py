@@ -1,6 +1,12 @@
 import tkinter as tk
 from tkinter import messagebox
 import random
+import sys
+
+from . import RegisterApp as app_register
+from . import LoginApp as app_login
+from . import database as db
+from . import MenuApp  as app_menu
 
 class Question:
     def __init__(self, prompt, choices, answer, time_limit=20):
@@ -82,6 +88,19 @@ class QuizApp:
         ]
 
         for question_type, prompt, choices, answer in questions:
+            global tipejurusan
+            if app_login.prodilogin == "Informatika" or app_login.prodilogin == "Sistem Informasi" or app_login.prodilogin == "Kedokteran" or app_login.prodilogin == "Statistika" or app_login.prodilogin == "Pendidikan Matematika":
+                tipejurusan = "Saintek"
+            elif app_login.prodilogin == "Hubungan Internasional" or app_login.prodilogin == "Ilmu Pemerintahan" or app_login.prodilogin == "Ilmu Hukum" or app_login.prodilogin == "Ilmu Komunikasi" or app_login.prodilogin == "Psikologi":
+                tipejurusan = "Soshum"
+            else:
+                tipejurusan = ""
+                
+            if tipejurusan == "Saintek" and question_type not in ["Saintek", "TPS"]:
+                continue
+            elif tipejurusan == "Soshum" and question_type not in ["Soshum","TPS"]:
+                continue
+
             if question_type == "Saintek":
                 question = SaintekQuestion(prompt, choices, answer)
             elif question_type == "Soshum":
@@ -136,10 +155,25 @@ class QuizApp:
         summary_text += "Daftar Pertanyaan dan Jawaban Benar:\n"
         for question in self.questions:
             summary_text += f"{question.prompt}\nJawaban Benar: {question.answer}\n\n"
-        
-        summary_text += f"Skor +{self.score * 10}"
+        total_score = self.score*10
+        summary_text += f"Skor +{total_score}"
+        self.update_score(total_score)
         messagebox.showinfo("Kuis Selesai", summary_text)
         self.root.quit()
+
+    def update_score(self, total_score):
+        participant = app_register.list_participant[app_login.usernamelogin]
+        participant.update_score(total_score)
+        query = f"update tbuser set skor = {app_login.skorlogin + self.score * 10} where username = '{app_login.usernamelogin}'"
+        db.cursor.execute(query)
+        db.con.commit()
+
+        self.exit_button = tk.Button(text="Back", font=("Futura", 14), command=self.exitQuiz)
+        self.exit_button.pack(pady=10)
+
+    def exitQuiz(self):
+        self.root.destroy()
+        app_menu.start()
     
     def start_timer(self):
         if self.time_left > 0 and self.timer_running:
@@ -151,12 +185,12 @@ class QuizApp:
     
     def exit_fullscreen(self, event=None):
         self.root.attributes("-fullscreen", False)  # Keluar dari mode layar penuh
-
-    def start():
-        root = tk.Tk()
-        root.title("Quiz")
-        app = QuizApp(root)
-        root.mainloop()
+    
+def start():
+    root = tk.Tk()
+    root.title("Quiz")
+    app = QuizApp(root)
+    root.mainloop()
 
 global root
 

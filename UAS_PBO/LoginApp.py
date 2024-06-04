@@ -65,6 +65,10 @@ class LoginApp:
         for i in result:
             if i[1] == username and i[2] == password:
                 messagebox.showinfo("login","Berhasil Login")
+                global usernamelogin, prodilogin, skorlogin
+                usernamelogin = i[1]
+                prodilogin = i[3]
+                skorlogin = i[4]
                 self.root.destroy()
                 app_menu.start()
                 break
