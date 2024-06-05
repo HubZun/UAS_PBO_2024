@@ -13,23 +13,18 @@ class MenuApp:
         self.password = password
         bg_color = root.cget("bg")
 
-        # Membuat frame dan menempatkannya di tengah jendela
         frame = tk.Frame(root, width=300, height=300, bg=bg_color)
         frame.place(relx=0.5, rely=0.4 , anchor=tk.CENTER)
 
-        # Label "selamat datang"
         self.welcome_label = tk.Label(frame, text= f"Halo, selamat datang {app_login.usernamelogin}", font=("Futura", 14))
-        self.welcome_label.grid(row=0, column=0, columnspan=2, pady=(50, 20))  # Padding atas diatur ke 50px
+        self.welcome_label.grid(row=0, column=0, columnspan=2, pady=(50, 20)) 
 
-        # Button "Quiz"
-        self.login_button = tk.Button(frame, text="       Quiz       ", font=("Futura", 20), command=self.quizstart)
+        self.login_button = tk.Button(frame, text="      Try Out      ", font=("Futura", 20), command=self.quizstart)
         self.login_button.grid(row=1, column=0, columnspan=2, pady=10)
 
-        # Button "Lihat Peringkat"
         self.signup_button = tk.Button(frame, text="Lihat Peringkat", font=("Futura", 20), command=self.seeRank)
         self.signup_button.grid(row=2, column=0, columnspan=2, pady=10)
 
-        # Button "Log Out"
         self.exit_button = tk.Button(frame, text="     Log Out    ", font=("Futura", 20), command=self.back)
         self.exit_button.grid(row=3, column=0, columnspan=2, pady=10)
 
@@ -46,15 +41,12 @@ class MenuApp:
         app_login.start()
 
 def start():
-    # Inisialisasi Tkinter
     root = tk.Tk()
     root.title("Menu")
-    root.attributes("-fullscreen", True)  # Set fullscreen
+    root.attributes("-fullscreen", True) 
 
-    # Membuat instance dari LoginApp
     app = MenuApp(root, "", "")
 
-    # Memulai loop utama Tkinter
     root.mainloop()
 
 global root
